@@ -3,6 +3,9 @@ an implementation of BERT to peform word sense disambiguation served through a F
 
 Word Sense Disambiguation is the problem of determining which "sense" (meaning) of a word in the context of a sentence. This model is fine-tuned on the SemEval-2007 dataset and achieves 76.6% F1% score on the test dataset (`semcor.xml`). This is comparable to the current SOTA which achieves 81.2% F1% on the same dataset.
 
+This repository builds upon this paper:
+> Wiedemann, G., Remus, S., Chawla, A., Biemann, C. (2019): [Does BERT Make Any Sense? Interpretable Word Sense Disambiguation with Contextualized Embeddings. Proceedings of KONVENS 2019](https://www.inf.uni-hamburg.de/en/inst/ab/lt/publications/2019-wiedemannetal-bert-sense.pdf), Erlangen, Germany.
+
 ## how to use it
 
 #### training the model
