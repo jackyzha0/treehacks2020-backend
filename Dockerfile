@@ -12,7 +12,8 @@ COPY BERT_pred.py BERT_pred.py
 COPY WordNet_Lookup.py WordNet_Lookup.py
 COPY BERT_semcor.pickle BERT_semcor.pickle
 
-RUN python -m nltk.downloader wordnet
+RUN python3 -m nltk.downloader wordnet
+RUN python3 -m spacy download en_core_web_md
 
 # Expose port and run server
 EXPOSE 5000
