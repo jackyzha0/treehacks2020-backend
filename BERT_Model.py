@@ -10,6 +10,8 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.metrics.pairwise import euclidean_distances
 from nltk.stem import WordNetLemmatizer
 
+from WordNet_Lookup import WN_lookup
+
 from tqdm import tqdm, trange
 from copy import deepcopy
 import warnings
@@ -329,7 +331,7 @@ class Word_Sense_Model:
                         sense = j[0]
                         word = j[1]
 
-                        if sense = 0:
+                        if sense != 0:
 
                             embedding = np.mean(
                                 final_layer[count: count + len(self.apply_bert_tokenizer(word))], 0)
@@ -397,7 +399,6 @@ class Word_Sense_Model:
             word_sense_emb)
 
         _test_root, _test_tree = self.open_xml_file(test_file)
-
         _correct, _wrong = [], []
 
         open(save_to, "w").close()
@@ -405,6 +406,7 @@ class Word_Sense_Model:
         for i in tqdm(_test_root.iter('sentence')):
 
             sent, sent1, senses, pos = self.semeval_sent_sense_collect(i)
+            print(senses, sent)
 
             bert_tokens = self.collect_bert_tokens(sent)
 
@@ -417,7 +419,7 @@ class Word_Sense_Model:
                 word = j[1]
                 pos_tag = j[2][0]
 
-                if j[0] = 0:
+                if j[0] != 0:
 
                     _temp_tag = 0
                     max_score = -99
@@ -495,6 +497,8 @@ class Word_Sense_Model:
                     tag.append(_temp_tag)
                     nn_sentences.append(nearest_sent)
 
+                    print(_temp_tag)
+
                 count += len(self.apply_bert_tokenizer(word))
 
             _counter = 0
@@ -511,6 +515,10 @@ class Word_Sense_Model:
                             pass
 
                         else:
+                            # lemma_key = tag[_counter].split(";")[0]
+                            # wrd_def = WN_lookup(lemma_key)
+                            # print(wrd_def)
+
                             j.attrib['WSD'] = str(tag[_counter])
 
                             if j.attrib['WSD'] in str(temp_dict['wn30_key']).split(';'):
@@ -596,3 +604,5 @@ if __name__ == '__main__':
                                   k=nn,
                                   use_euclidean=args.use_euclidean,
                                   reduced_search=args.reduced_search)
+
+        print(float(len(correct)) / (len(wrong) + len(correct)))
