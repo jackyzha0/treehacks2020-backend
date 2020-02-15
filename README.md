@@ -14,6 +14,11 @@ Run `chmod +x train.sh` to be able to run the script, then do `./train.sh` to be
 #### serving the model
 Run `python server.py` to start a Flask server on `localhost:5000`. Hit it with a POST on `/api` with a form response containing a `sentence` and target `word`. First spin-up will take ~10s and any subsequent requests will take around 500ms.
 
+#### docker
+
+Build the image by doing `docker build -t jzhao2k19/bert-wsd:latest .`
+Run the image by doing `docker run -p 5000:5000 jzhao2k19/bert-wsd:latest`
+
 ## examples
 
 ### 1
