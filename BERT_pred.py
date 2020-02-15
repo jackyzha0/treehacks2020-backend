@@ -207,6 +207,3 @@ class BERT_pred:
 				_sentence_maps[j].extend(self.word_sense_emb[i][j]['sentences'])
 
 		return _sense_emb, _sentence_maps, _sense_word_map, _word_sense_map
-
-m = BERT_pred("BERT_semcor.pickle")
-print(m.predict("Let's now take a look at coefficient of elasticity", "elasticity"))
