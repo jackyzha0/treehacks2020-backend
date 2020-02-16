@@ -24,7 +24,7 @@ def handle_request():
     json_response = r.json()
 
     textDeg = json_response['textAngle']
-    lines = [{"textAngle": textDeg}]
+    lines = []
     allText = []
 
     for idx, det in enumerate(json_response['regions']):
@@ -51,9 +51,12 @@ def handle_request():
     r = requests.post(AZURE_TEXT_ANALYTICS, headers=headers, json=payload)
     text_preds = r.json()
 
-    allSimplified = []
-    for doc in text_preds['documents']:
-        allSimplified.append(" ".join(doc['keyPhrases']))
+    if 'documents' in text_preds:
+        allSimplified = []
+        for doc in text_preds['documents']:
+            allSimplified.append(" ".join(doc['keyPhrases']))
+    else:
+        return jsonify({"textAngle": 0}, {'ocr': []}, {'image-urls': []}), 200
 
     imgurls = []
     headers = {'Ocp-Apim-Subscription-Key': '7bfd359d42614c3888bbb25998062080'}
@@ -68,7 +71,7 @@ def handle_request():
                 imgurls.append(ret_docs['value'][0]['contentUrl'])
 
     # return ocr result + image urls
-    return jsonify({'ocr': lines}, {'image-urls': imgurls}), 200
+    return jsonify({"textAngle": textDeg}, {'ocr': lines}, {'image-urls': imgurls}), 200
 
 @app.route('/quiz', methods=['POST'])
 def handle_quiz():
