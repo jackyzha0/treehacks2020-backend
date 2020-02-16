@@ -20,6 +20,10 @@ You can additionally hit `/api/kwd` to get the noun chunks for a given sentence.
 Build the image by doing `docker build -t jzhao2k19/bert-wsd:latest .`
 Run the image by doing `docker run -p 5000:5000 jzhao2k19/bert-wsd:latest`
 
+## service urls
+* WSD-model: `140.238.147.73:5000/api/wsd`
+* img-pipeline: `140.238.147.73:8080/api`
+
 ## examples
 
 ### 1
