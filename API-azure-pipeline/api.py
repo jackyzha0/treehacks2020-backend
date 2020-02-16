@@ -23,7 +23,6 @@ def handle_request():
 
     json_response = r.json()
 
-    textDeg = json_response['textAngle']
     lines = []
     allText = []
 
@@ -56,7 +55,7 @@ def handle_request():
         for doc in text_preds['documents']:
             allSimplified.append(" ".join(doc['keyPhrases']))
     else:
-        return jsonify({"textAngle": 0}, {'ocr': []}, {'image-urls': []}), 200
+        return jsonify({'ocr': [], 'image-urls': []}), 200
 
     imgurls = []
     headers = {'Ocp-Apim-Subscription-Key': '7bfd359d42614c3888bbb25998062080'}
@@ -71,7 +70,7 @@ def handle_request():
                 imgurls.append(ret_docs['value'][0]['contentUrl'])
 
     # return ocr result + image urls
-    return jsonify({"textAngle": textDeg}, {'ocr': lines}, {'image-urls': imgurls}), 200
+    return jsonify({'ocr': lines, 'imageUrls': imgurls}), 200
 
 @app.route('/quiz', methods=['POST'])
 def handle_quiz():
