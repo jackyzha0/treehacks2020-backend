@@ -1,4 +1,4 @@
 flask
 requests
 werkzeug
-sqlite3
+spacy
