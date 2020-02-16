@@ -1,5 +1,4 @@
 from flask import Flask, Response, request, jsonify
-import requests
 import json
 import spacy
 
@@ -8,7 +7,6 @@ app = Flask(__name__)
 class Quiz:
     def __init__(self):
         self.nlp = spacy.load("en_core_web_md")
-        tmp_file = 'word2vec-glove.6B.300d.txt'
         
         merge_ncs = self.nlp.create_pipe("merge_noun_chunks")
         merge_ents = self.nlp.create_pipe("merge_entities")
@@ -37,7 +35,7 @@ class Quiz:
                 quiz.append(qa_dic)
         return quiz
 
-@app.route('/api', methods=['POST'])
+@app.route('/quiz', methods=['POST'])
 def handle_request():
     input_text = request.args["q"]
     finished_quiz=q.get_quiz(input_text)

@@ -23,6 +23,7 @@ Run the image by doing `docker run -p 5000:5000 jzhao2k19/bert-wsd:latest`
 ## service urls
 * WSD-model: `140.238.147.73:5000/api/wsd`
 * img-pipeline: `140.238.147.73:8080/api`
+* quiz-generation: `140.238.147.73:8081/api?q=some+query`
 
 ## examples
 
