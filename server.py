@@ -14,7 +14,6 @@ def healthCheck():
     logging.info("Health check ping received")
     return jsonify({'status': 'healthy'}), 200
 
-
 @app.route('/api/wsd', methods=['POST'])
 def parseIntent():
     data = flask.request.form  # is a dictionary

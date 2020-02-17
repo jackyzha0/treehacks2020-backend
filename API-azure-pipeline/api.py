@@ -5,6 +5,7 @@ import requests
 import werkzeug
 import json
 import spacy
+import random
 
 AZURE_OCR = "https://westus.api.cognitive.microsoft.com/vision/v2.0/ocr?language=en"
 AZURE_TEXT_ANALYTICS = "https://treehacks-text.cognitiveservices.azure.com/text/analytics/v2.1/keyPhrases"
@@ -26,11 +27,16 @@ def handle_request():
     lines = []
     allText = []
 
+    print(json_response['regions'])
+
     for idx, det in enumerate(json_response['regions']):
         lineStr = ""
+        tmpLine = ""
 
         for line in det['lines']:
-            lineStr = " ".join([word['text'] for word in line['words']])
+            tmpLine = " ".join([word['text'] for word in line['words']]) + " "
+            lineStr += tmpLine
+
 
         bounding = [int(x) for x in det['boundingBox'].split(",")]
         lineObj = {"x": bounding[0],
@@ -42,7 +48,7 @@ def handle_request():
 
         allText.append({"language": "en",
                         "id": idx,
-                        "text": lineStr})
+                        "text": tmpLine})
 
     # get keywords
     headers = {'Ocp-Apim-Subscription-Key': 'e499e8daa7ea4f609e0dc5772771cea8'}
@@ -70,7 +76,17 @@ def handle_request():
                 imgurls.append(ret_docs['value'][0]['contentUrl'])
 
     # return ocr result + image urls
+    print(lines)
     return jsonify({'ocr': lines, 'imageUrls': imgurls}), 200
+
+@app.route('/rnd_wsd', methods=['POST'])
+def handle_rnd():
+    input_text = request.args["q"]
+    chunk = random.choice(q.get_chunks(input_text))
+
+
+
+    return jsonify({'output': finished_quiz}), 200
 
 @app.route('/quiz', methods=['POST'])
 def handle_quiz():
@@ -89,6 +105,15 @@ class Quiz:
         merge_ents = self.nlp.create_pipe("merge_entities")
         self.nlp.add_pipe(merge_ents)
         self.nlp.add_pipe(merge_ncs) 
+
+    def get_chunks(self, text):
+        nouns=[]
+        list_of_sentences= text.split(".")
+        for sentence in list_of_sentences:
+            parsed_sentence = self.nlp(sentence)
+            li_parsed_sentence= list(parsed_sentence)
+            nouns.extend(list(parsed_sentence.noun_chunks))
+        return nouns
     
     def get_quiz(self, text):
         quiz=[]
